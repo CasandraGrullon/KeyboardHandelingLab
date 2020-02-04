@@ -10,11 +10,28 @@ import UIKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var imageView: UIImageView!
+    
+    private lazy var tapGesture: UITapGestureRecognizer = {
+       let gesture = UITapGestureRecognizer()
+        gesture.addTarget(self, action: #selector(didTap(_:)))
+        gesture.numberOfTapsRequired = 1
+        return gesture
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        imageView.addGestureRecognizer(tapGesture)
+        imageView.isUserInteractionEnabled = true
     }
-
+    
+    @objc private func didTap(_ gesture: UITapGestureRecognizer ) {
+        guard let loginVC = storyboard?.instantiateViewController(withIdentifier: "LoginViewController") as? LoginViewController else {
+            fatalError("could not cast to login view")
+        }
+        
+        navigationController?.pushViewController(loginVC, animated: true)
+    }
 
 }
 
